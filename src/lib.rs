@@ -2,6 +2,8 @@
 
 #![no_std]
 
+use core::str;
+
 /// Unchecked and potentially unsafe conversions from `T` into `Self`.
 pub trait FromUnchecked<T>: Sized {
     /// Performs the unchecked conversion.
@@ -32,5 +34,19 @@ impl<'a, T, U> FromUnchecked<&'a mut U> for &'a mut T {
     #[inline]
     unsafe fn from_unchecked(other: &mut U) -> &mut T {
         &mut *(other as *mut U as *mut T)
+    }
+}
+
+impl<'a> FromUnchecked<&'a [u8]> for &'a str {
+    #[inline]
+    unsafe fn from_unchecked(utf8: &[u8]) -> &str {
+        str::from_utf8_unchecked(utf8)
+    }
+}
+
+impl<'a> FromUnchecked<&'a mut [u8]> for &'a mut str {
+    #[inline]
+    unsafe fn from_unchecked(utf8: &mut [u8]) -> &mut str {
+        str::from_utf8_unchecked_mut(utf8)
     }
 }
