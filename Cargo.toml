@@ -1,17 +1,5 @@
-[package]
-name = "unchecked_convert"
-version = "0.1.0"
-authors = ["Nikolai Vazquez"]
-license = "MIT/Apache-2.0"
-repository = "https://github.com/nvzqz/unchecked-convert-rs"
-categories = ["no-std"]
-description = "Traits for unchecked conversions between types."
-
-[badges]
-travis-ci = { repository = "nvzqz/unchecked-convert-rs" }
-
-[features]
-default = ["std"]
-nightly = ["alloc"]
-alloc = []
-std = []
+[workspace]
+members = [
+    "unchecked_convert",
+    "unchecked_convert_derive"
+]

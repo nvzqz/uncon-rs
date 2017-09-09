@@ -54,6 +54,41 @@
 //! assert_eq!(s, "hi");
 //! ```
 //!
+//! # Deriving Traits
+//!
+//! Deriving traits requires adding the following to your project's
+//! `Cargo.toml`:
+//!
+//! ```toml
+//! [dependencies]
+//! unchecked_convert_derive = "0.1.0"
+//! ```
+//!
+//! and this to your crate root:
+//!
+//! ```
+//! #[macro_use]
+//! extern crate unchecked_convert_derive;
+//! # fn main() {}
+//! ```
+//!
+//! The [`FromUnchecked`] trait can be derived under certain circumstances.
+//!
+//! Currently, only structs with a single field are supported.
+//!
+//! ```
+//! # #[macro_use]
+//! # extern crate unchecked_convert_derive;
+//! # extern crate unchecked_convert;
+//! # use unchecked_convert::*;
+//! #[derive(FromUnchecked)]
+//! struct U4 { bits: u8 }
+//!
+//! # fn main() {
+//! let x = unsafe { U4::from_unchecked(0b1010) };
+//! # }
+//! ```
+//!
 //! [crate]: https://crates.io/crates/unchecked_convert
 //! [`FromUnchecked`]: trait.FromUnchecked.html
 //! [`IntoUnchecked`]: trait.IntoUnchecked.html
