@@ -1,3 +1,64 @@
+//! Support for deriving traits found in [`unchecked_convert`].
+//!
+//! # Usage
+//!
+//! This crate is available [on crates.io][crate] and can be used by adding the
+//! following to your project's `Cargo.toml`:
+//!
+//! ```toml
+//! [dependencies]
+//! unchecked_convert_derive = "0.1.0"
+//! unchecked_convert = "0.1.0"
+//! ```
+//!
+//! and this to your crate root:
+//!
+//! ```
+//! #[macro_use]
+//! extern crate unchecked_convert_derive;
+//! extern crate unchecked_convert;
+//! # fn main() {}
+//! ```
+//!
+//! # Examples
+//!
+//! The [`FromUnchecked`] trait can be derived for:
+//!
+//! - Structs with a single field
+//! - C-like enums with `#[repr]` attribute
+//!
+//! ```
+//! # extern crate core;
+//! # #[macro_use]
+//! # extern crate unchecked_convert_derive;
+//! # extern crate unchecked_convert;
+//! # use unchecked_convert::*;
+//! #[derive(FromUnchecked)]
+//! struct U4 { bits: u8 }
+//!
+//! #[derive(FromUnchecked)]
+//! #[repr(u8)]
+//! enum Flag {
+//!     A, B, C, D
+//! }
+//!
+//! # fn main() {
+//! unsafe {
+//!     let b = 0b1010;
+//!     let x = U4::from_unchecked(b);
+//!     assert_eq!(x.bits, b);
+//!
+//!     let n = 2;
+//!     let f = Flag::from_unchecked(n);
+//!     assert_eq!(f as u8, n);
+//! }
+//! # }
+//! ```
+//!
+//! [crate]: https://crates.io/crates/unchecked_convert_derive
+//! [`unchecked_convert`]: https://docs.rs/unchecked_convert
+//! [`FromUnchecked`]: https://docs.rs/unchecked_convert/trait.FromUnchecked.html
+
 #[macro_use]
 extern crate quote;
 extern crate proc_macro;
@@ -8,6 +69,7 @@ use proc_macro::TokenStream;
 use syn::{Body, MetaItem, NestedMetaItem, VariantData};
 use quote::Tokens;
 
+#[doc(hidden)]
 #[proc_macro_derive(FromUnchecked)]
 pub fn from_unchecked(input: TokenStream) -> TokenStream {
     let ast = syn::parse_derive_input(&input.to_string()).unwrap();

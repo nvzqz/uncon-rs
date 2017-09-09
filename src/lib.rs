@@ -56,58 +56,13 @@
 //!
 //! # Deriving Traits
 //!
-//! Deriving traits requires adding the following to your project's
-//! `Cargo.toml`:
-//!
-//! ```toml
-//! [dependencies]
-//! unchecked_convert_derive = "0.1.0"
-//! ```
-//!
-//! and this to your crate root:
-//!
-//! ```
-//! #[macro_use]
-//! extern crate unchecked_convert_derive;
-//! # fn main() {}
-//! ```
-//!
-//! The [`FromUnchecked`] trait can be derived for:
-//!
-//! - Structs with a single field
-//! - C-like enums with `#[repr]` attribute
-//!
-//! ```
-//! # extern crate core;
-//! # #[macro_use]
-//! # extern crate unchecked_convert_derive;
-//! # extern crate unchecked_convert;
-//! # use unchecked_convert::*;
-//! #[derive(FromUnchecked)]
-//! struct U4 { bits: u8 }
-//!
-//! #[derive(FromUnchecked)]
-//! #[repr(u8)]
-//! enum Flag {
-//!     A, B, C, D
-//! }
-//!
-//! # fn main() {
-//! unsafe {
-//!     let b = 0b1010;
-//!     let x = U4::from_unchecked(b);
-//!     assert_eq!(x.bits, b);
-//!
-//!     let n = 2;
-//!     let f = Flag::from_unchecked(n);
-//!     assert_eq!(f as u8, n);
-//! }
-//! # }
-//! ```
+//! See the docs of [`unchecked_convert_derive`] for info on deriving this
+//! crate's traits.
 //!
 //! [crate]: https://crates.io/crates/unchecked_convert
 //! [`FromUnchecked`]: trait.FromUnchecked.html
 //! [`IntoUnchecked`]: trait.IntoUnchecked.html
+//! [`unchecked_convert_derive`]: https://docs.rs/unchecked_convert_derive
 
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "alloc", feature(alloc))]

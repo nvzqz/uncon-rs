@@ -13,9 +13,14 @@ proc-macro = true
 [badges]
 travis-ci = { repository = "nvzqz/unchecked-convert-rs" }
 
+[dev-dependencies.unchecked_convert]
+version = "0.1.0"
+path = "../"
+default-features = false
+
 [features]
 default = ["std"]
-std = []
+std = ["unchecked_convert/std"]
 
 [dependencies]
 syn = "0.11"
