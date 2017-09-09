@@ -7,6 +7,9 @@ repository = "https://github.com/nvzqz/unchecked-convert-rs"
 categories = ["no-std"]
 description = "Traits for unchecked conversions between types."
 
+[badges]
+travis-ci = { repository = "nvzqz/unchecked-convert-rs" }
+
 [features]
 default = ["std"]
 nightly = ["alloc"]
