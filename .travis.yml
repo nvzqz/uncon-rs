@@ -7,11 +7,11 @@ matrix:
       os: osx
     - rust: beta
     - rust: nightly
-  allow_failures:
-    - rust: nightly
-      env: FEATURES="--features nightly"
-env:
-  - FEATURES=""
+      script:
+        - cargo test
+        - cargo test --features nightly
+        - cargo test --no-default-features
+        - cargo test --no-default-features --features nightly
 script:
-  - cargo test $FEATURES
-  - cargo test --no-default-features $FEATURES
+  - cargo test
+  - cargo test --no-default-features
