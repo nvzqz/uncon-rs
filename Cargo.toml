@@ -10,11 +10,13 @@ description = "Traits for unchecked conversions between types."
 [badges]
 travis-ci = { repository = "nvzqz/unchecked-convert-rs" }
 
-[dev-dependencies]
-unchecked_convert_derive = { version = "0.1.0", path = "derive" }
+[dev-dependencies.unchecked_convert_derive]
+version = "0.1.0"
+path = "derive"
+default-features = false
 
 [features]
 default = ["std"]
 nightly = ["alloc"]
 alloc = []
-std = []
+std = ["unchecked_convert_derive/std"]

@@ -13,6 +13,11 @@ proc-macro = true
 [badges]
 travis-ci = { repository = "nvzqz/unchecked-convert-rs" }
 
+[features]
+default = ["std"]
+std = []
+
 [dependencies]
 syn = "0.11"
 quote = "0.3"
+regex = "0.2"

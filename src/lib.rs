@@ -72,11 +72,13 @@
 //! # fn main() {}
 //! ```
 //!
-//! The [`FromUnchecked`] trait can be derived under certain circumstances.
+//! The [`FromUnchecked`] trait can be derived for:
 //!
-//! Currently, only structs with a single field are supported.
+//! - Structs with a single field
+//! - C-like enums with `#[repr]` attribute
 //!
 //! ```
+//! # extern crate core;
 //! # #[macro_use]
 //! # extern crate unchecked_convert_derive;
 //! # extern crate unchecked_convert;
@@ -84,8 +86,22 @@
 //! #[derive(FromUnchecked)]
 //! struct U4 { bits: u8 }
 //!
+//! #[derive(FromUnchecked)]
+//! #[repr(u8)]
+//! enum Flag {
+//!     A, B, C, D
+//! }
+//!
 //! # fn main() {
-//! let x = unsafe { U4::from_unchecked(0b1010) };
+//! unsafe {
+//!     let b = 0b1010;
+//!     let x = U4::from_unchecked(b);
+//!     assert_eq!(x.bits, b);
+//!
+//!     let n = 2;
+//!     let f = Flag::from_unchecked(n);
+//!     assert_eq!(n, f as u8);
+//! }
 //! # }
 //! ```
 //!
