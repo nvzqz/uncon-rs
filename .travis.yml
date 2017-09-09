@@ -1,0 +1,15 @@
+language: rust
+matrix:
+  include:
+    - rust: 1.20.0
+    - rust: stable
+    - rust: stable
+      os: osx
+    - rust: beta
+    - rust: nightly
+  allow_failures:
+    - rust: nightly
+      env: FEATURES="--features nightly"
+script:
+  - cargo test $FEATURES
+  - cargo test --no-default-features $FEATURES
