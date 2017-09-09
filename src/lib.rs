@@ -13,3 +13,10 @@ pub trait IntoUnchecked<T>: Sized {
     /// Performs the unchecked conversion.
     unsafe fn into_unchecked(self) -> T;
 }
+
+impl<T, U: FromUnchecked<T>> IntoUnchecked<U> for T {
+    #[inline]
+    unsafe fn into_unchecked(self) -> U {
+        U::from_unchecked(self)
+    }
+}
