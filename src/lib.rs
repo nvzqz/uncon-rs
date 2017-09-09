@@ -1,4 +1,23 @@
 //! Traits for unchecked conversions between types.
+//!
+//! # Usage
+//!
+//! This crate is available [on crates.io][crate] and can be used by adding the
+//! following to your project's `Cargo.toml`:
+//!
+//! ```toml
+//! [dependencies]
+//! unchecked_convert = "0.1.0"
+//! ```
+//!
+//! and this to your crate root:
+//!
+//! ```
+//! extern crate unchecked_convert;
+//! # fn main() {}
+//! ```
+//!
+//! [crate]: https://crates.io/crates/unchecked_convert
 
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "alloc", feature(alloc))]
