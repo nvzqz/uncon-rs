@@ -19,6 +19,31 @@
 //!
 //! # Examples
 //!
+//! A type may wrap around another but must maintain certain invariants that
+//! aren't met by the inner type. An example of this is `str` in relation to
+//! `[u8]` where a string is just a UTF-8 encoded byte slice.
+//!
+//! In this example, `U4` is a simple wrapper around `u8` where valid instances
+//! must only ever have 4 bits set.
+//!
+//! ```
+//! use unchecked_convert::FromUnchecked;
+//!
+//! struct U4(u8);
+//!
+//! impl From<u8> for U4 {
+//!     fn from(byte: u8) -> U4 {
+//!         U4(byte & 0b1111)
+//!     }
+//! }
+//!
+//! impl FromUnchecked<u8> for U4 {
+//!     unsafe fn from_unchecked(byte: u8) -> U4 {
+//!         U4(byte)
+//!     }
+//! }
+//! ```
+//!
 //! If a type `T` implements [`FromUnchecked`] for some type `U`, then `U`
 //! automatically implements [`IntoUnchecked`] for `T`.
 //!
