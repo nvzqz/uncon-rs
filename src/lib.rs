@@ -20,3 +20,17 @@ impl<T, U: FromUnchecked<T>> IntoUnchecked<U> for T {
         U::from_unchecked(self)
     }
 }
+
+impl<'a, T, U> FromUnchecked<&'a U> for &'a T {
+    #[inline]
+    unsafe fn from_unchecked(other: &U) -> &T {
+        &*(other as *const U as *const T)
+    }
+}
+
+impl<'a, T, U> FromUnchecked<&'a mut U> for &'a mut T {
+    #[inline]
+    unsafe fn from_unchecked(other: &mut U) -> &mut T {
+        &mut *(other as *mut U as *mut T)
+    }
+}
