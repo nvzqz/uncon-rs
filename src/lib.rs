@@ -28,7 +28,7 @@
 //! let b = [b'h', b'i'];
 //! let s: &str = unsafe { b.as_ref().into_unchecked() };
 //!
-//! assert_eq!(string, "hi");
+//! assert_eq!(s, "hi");
 //! ```
 //!
 //! [crate]: https://crates.io/crates/unchecked_convert
