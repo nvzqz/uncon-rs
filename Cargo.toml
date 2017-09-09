@@ -9,4 +9,6 @@ description = "Traits for unchecked conversions between types."
 
 [features]
 default = ["std"]
+nightly = ["alloc"]
+alloc = []
 std = []

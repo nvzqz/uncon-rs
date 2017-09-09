@@ -1,9 +1,17 @@
 //! Traits for unchecked conversions between types.
 
 #![cfg_attr(not(feature = "std"), no_std)]
+#![cfg_attr(feature = "alloc", feature(alloc))]
 
 #[cfg(feature = "std")]
 extern crate core;
+#[cfg(feature = "alloc")]
+extern crate alloc;
+
+#[cfg(feature = "alloc")]
+use alloc::boxed::Box;
+#[cfg(feature = "alloc")]
+use alloc::{String, Vec};
 
 use core::str;
 
@@ -54,7 +62,7 @@ impl<'a> FromUnchecked<&'a mut [u8]> for &'a mut str {
     }
 }
 
-#[cfg(feature = "std")]
+#[cfg(any(feature = "std", feature = "alloc"))]
 impl FromUnchecked<Vec<u8>> for String {
     #[inline]
     unsafe fn from_unchecked(utf8: Vec<u8>) -> String {
@@ -62,7 +70,7 @@ impl FromUnchecked<Vec<u8>> for String {
     }
 }
 
-#[cfg(feature = "std")]
+#[cfg(any(feature = "std", feature = "alloc"))]
 impl FromUnchecked<Box<[u8]>> for String {
     #[inline]
     unsafe fn from_unchecked(utf8: Box<[u8]>) -> String {
