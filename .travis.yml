@@ -15,3 +15,5 @@ matrix:
 script:
   - cargo test
   - cargo test --no-default-features
+  - cargo test --manifest-path
+  - cargo test --no-default-features --manifest-path derive/Cargo.toml
