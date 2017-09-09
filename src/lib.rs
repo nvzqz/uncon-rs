@@ -1,4 +1,4 @@
-//! Traits for unchecked conversions between types.
+//! Traits for **un**checked **con**versions between types.
 //!
 //! # Usage
 //!
@@ -7,13 +7,13 @@
 //!
 //! ```toml
 //! [dependencies]
-//! unchecked_convert = "0.1.0"
+//! uncon = "0.1.0"
 //! ```
 //!
 //! and this to your crate root:
 //!
 //! ```
-//! extern crate unchecked_convert;
+//! extern crate uncon;
 //! # fn main() {}
 //! ```
 //!
@@ -27,7 +27,7 @@
 //! must only ever have 4 bits set.
 //!
 //! ```
-//! # use unchecked_convert::*;
+//! # use uncon::*;
 //! struct U4(u8);
 //!
 //! impl From<u8> for U4 {
@@ -47,7 +47,7 @@
 //! automatically implements [`IntoUnchecked`] for `T`.
 //!
 //! ```
-//! # use unchecked_convert::*;
+//! # use uncon::*;
 //! let b = [b'h', b'i'];
 //! let s: &str = unsafe { b.as_ref().into_unchecked() };
 //!
@@ -56,13 +56,13 @@
 //!
 //! # Deriving Traits
 //!
-//! See the docs of [`unchecked_convert_derive`] for info on deriving this
+//! See the docs of [`uncon_derive`] for info on deriving this
 //! crate's traits.
 //!
-//! [crate]: https://crates.io/crates/unchecked_convert
+//! [crate]: https://crates.io/crates/uncon
 //! [`FromUnchecked`]: trait.FromUnchecked.html
 //! [`IntoUnchecked`]: trait.IntoUnchecked.html
-//! [`unchecked_convert_derive`]: https://docs.rs/unchecked_convert_derive
+//! [`uncon_derive`]: https://docs.rs/uncon_derive
 
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "alloc", feature(alloc))]

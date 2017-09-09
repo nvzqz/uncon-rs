@@ -1,4 +1,4 @@
-# unchecked_convert [![Build Status][travis-badge]][travis]
+# uncon [![Build Status][travis-badge]][travis]
 
 Traits for unchecked conversions between types in Rust.
 
@@ -12,8 +12,8 @@ This project is released under either:
 
 at your choosing.
 
-[travis]:       https://travis-ci.org/nvzqz/unchecked-convert-rs
-[travis-badge]: https://travis-ci.org/nvzqz/unchecked-convert-rs.svg?branch=master
+[travis]:       https://travis-ci.org/nvzqz/uncon-rs
+[travis-badge]: https://travis-ci.org/nvzqz/uncon-rs.svg?branch=master
 
-[license-mit]:    https://github.com/nvzqz/unchecked-convert-rs/blob/master/LICENSE-MIT
-[license-apache]: https://github.com/nvzqz/unchecked-convert-rs/blob/master/LICENSE-APACHE
+[license-mit]:    https://github.com/nvzqz/uncon-rs/blob/master/LICENSE-MIT
+[license-apache]: https://github.com/nvzqz/uncon-rs/blob/master/LICENSE-APACHE

@@ -1,14 +1,14 @@
 [package]
-name = "unchecked_convert"
+name = "uncon"
 version = "0.1.0"
 authors = ["Nikolai Vazquez"]
 license = "MIT/Apache-2.0"
-repository = "https://github.com/nvzqz/unchecked-convert-rs"
+repository = "https://github.com/nvzqz/uncon-rs"
 categories = ["no-std"]
 description = "Traits for unchecked conversions between types."
 
 [badges]
-travis-ci = { repository = "nvzqz/unchecked-convert-rs" }
+travis-ci = { repository = "nvzqz/uncon-rs" }
 
 [features]
 default = ["std"]

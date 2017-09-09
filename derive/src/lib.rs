@@ -1,4 +1,4 @@
-//! Support for deriving traits found in [`unchecked_convert`].
+//! Support for deriving traits found in [`uncon`].
 //!
 //! # Usage
 //!
@@ -7,16 +7,16 @@
 //!
 //! ```toml
 //! [dependencies]
-//! unchecked_convert_derive = "0.1.0"
-//! unchecked_convert = "0.1.0"
+//! uncon_derive = "0.1.0"
+//! uncon = "0.1.0"
 //! ```
 //!
 //! and this to your crate root:
 //!
 //! ```
 //! #[macro_use]
-//! extern crate unchecked_convert_derive;
-//! extern crate unchecked_convert;
+//! extern crate uncon_derive;
+//! extern crate uncon;
 //! # fn main() {}
 //! ```
 //!
@@ -30,9 +30,9 @@
 //! ```
 //! # extern crate core;
 //! # #[macro_use]
-//! # extern crate unchecked_convert_derive;
-//! # extern crate unchecked_convert;
-//! # use unchecked_convert::*;
+//! # extern crate uncon_derive;
+//! # extern crate uncon;
+//! # use uncon::*;
 //! #[derive(FromUnchecked)]
 //! struct U4 { bits: u8 }
 //!
@@ -55,9 +55,9 @@
 //! # }
 //! ```
 //!
-//! [crate]: https://crates.io/crates/unchecked_convert_derive
-//! [`unchecked_convert`]: https://docs.rs/unchecked_convert
-//! [`FromUnchecked`]: https://docs.rs/unchecked_convert/trait.FromUnchecked.html
+//! [crate]: https://crates.io/crates/uncon_derive
+//! [`uncon`]: https://docs.rs/uncon
+//! [`FromUnchecked`]: https://docs.rs/uncon/trait.FromUnchecked.html
 
 #[macro_use]
 extern crate quote;
@@ -136,7 +136,7 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
         },
     };
     quote! {
-        impl #impl_generics ::unchecked_convert::FromUnchecked<#ty> for #name #ty_generics #where_clause {
+        impl #impl_generics ::uncon::FromUnchecked<#ty> for #name #ty_generics #where_clause {
             #[inline]
             unsafe fn from_unchecked(inner: #ty) -> Self {
                 #init

@@ -1,9 +1,9 @@
 [package]
-name = "unchecked_convert_derive"
+name = "uncon_derive"
 version = "0.1.0"
 authors = ["Nikolai Vazquez"]
 license = "MIT/Apache-2.0"
-repository = "https://github.com/nvzqz/unchecked-convert-rs"
+repository = "https://github.com/nvzqz/uncon-rs"
 categories = ["no-std"]
 description = "Derive functionality for unchecked conversion traits."
 
@@ -11,16 +11,16 @@ description = "Derive functionality for unchecked conversion traits."
 proc-macro = true
 
 [badges]
-travis-ci = { repository = "nvzqz/unchecked-convert-rs" }
+travis-ci = { repository = "nvzqz/uncon-rs" }
 
-[dev-dependencies.unchecked_convert]
+[dev-dependencies.uncon]
 version = "0.1.0"
 path = "../"
 default-features = false
 
 [features]
 default = ["std"]
-std = ["unchecked_convert/std"]
+std = ["uncon/std"]
 
 [dependencies]
 syn = "0.11"
