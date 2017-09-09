@@ -13,7 +13,8 @@ matrix:
         - cargo test --no-default-features
         - cargo test --no-default-features --features nightly
 script:
-  - cargo test
-  - cargo test --no-default-features
-  - cargo test --manifest-path
-  - cargo test --no-default-features --manifest-path derive/Cargo.toml
+  - for path in . derive; do
+      MANIFEST="$path/Cargo.toml"
+      cargo test --manifest-path "$MANIFEST"
+      cargo test --manifest-path "$MANIFEST" --no-default-features
+    done
