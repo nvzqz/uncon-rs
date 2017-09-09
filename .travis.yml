@@ -16,4 +16,4 @@ script:
   - cargo test
   - cargo test --no-default-features
   - cargo test --manifest-path derive/Cargo.toml
-  - cargo test --no-default-features --manifest-path derive/Cargo.toml
+  - cargo test --manifest-path derive/Cargo.toml --no-default-features
