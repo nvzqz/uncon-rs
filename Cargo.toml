@@ -6,3 +6,7 @@ license = "MIT/Apache-2.0"
 repository = "https://github.com/nvzqz/unchecked-convert-rs"
 categories = ["no-std"]
 description = "Traits for unchecked conversions between types."
+
+[features]
+default = ["std"]
+std = []
