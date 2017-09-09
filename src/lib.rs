@@ -100,7 +100,7 @@
 //!
 //!     let n = 2;
 //!     let f = Flag::from_unchecked(n);
-//!     assert_eq!(n, f as u8);
+//!     assert_eq!(f as u8, n);
 //! }
 //! # }
 //! ```
