@@ -17,7 +17,23 @@
 //! # fn main() {}
 //! ```
 //!
+//! # Examples
+//!
+//! If a type `T` implements [`FromUnchecked`] for some type `U`, then `U`
+//! automatically implements [`IntoUnchecked`] for `T`.
+//!
+//! ```
+//! use unchecked_convert::IntoUnchecked;
+//!
+//! let b = [b'h', b'i'];
+//! let s: &str = unsafe { b.as_ref().into_unchecked() };
+//!
+//! assert_eq!(string, "hi");
+//! ```
+//!
 //! [crate]: https://crates.io/crates/unchecked_convert
+//! [`FromUnchecked`]: trait.FromUnchecked.html
+//! [`IntoUnchecked`]: trait.IntoUnchecked.html
 
 #![cfg_attr(not(feature = "std"), no_std)]
 #![cfg_attr(feature = "alloc", feature(alloc))]
