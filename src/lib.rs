@@ -27,8 +27,7 @@
 //! must only ever have 4 bits set.
 //!
 //! ```
-//! use unchecked_convert::FromUnchecked;
-//!
+//! # use unchecked_convert::*;
 //! struct U4(u8);
 //!
 //! impl From<u8> for U4 {
@@ -48,8 +47,7 @@
 //! automatically implements [`IntoUnchecked`] for `T`.
 //!
 //! ```
-//! use unchecked_convert::IntoUnchecked;
-//!
+//! # use unchecked_convert::*;
 //! let b = [b'h', b'i'];
 //! let s: &str = unsafe { b.as_ref().into_unchecked() };
 //!
