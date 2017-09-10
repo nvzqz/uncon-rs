@@ -122,6 +122,20 @@ impl<'a, T, U> FromUnchecked<&'a mut U> for &'a mut T {
     }
 }
 
+impl<'a, T: ?Sized> FromUnchecked<*const T> for &'a T {
+    #[inline]
+    unsafe fn from_unchecked(ptr: *const T) -> &'a T {
+        &*ptr
+    }
+}
+
+impl<'a, T: ?Sized> FromUnchecked<*mut T> for &'a mut T {
+    #[inline]
+    unsafe fn from_unchecked(ptr: *mut T) -> &'a mut T {
+        &mut *ptr
+    }
+}
+
 impl<'a> FromUnchecked<&'a [u8]> for &'a str {
     #[inline]
     unsafe fn from_unchecked(utf8: &[u8]) -> &str {
