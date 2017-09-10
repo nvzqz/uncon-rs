@@ -139,15 +139,15 @@ impl<'a> FromUnchecked<&'a mut [u8]> for &'a mut str {
 #[cfg(any(feature = "std", feature = "alloc"))]
 impl FromUnchecked<Vec<u8>> for String {
     #[inline]
-    unsafe fn from_unchecked(utf8: Vec<u8>) -> String {
-        String::from_utf8_unchecked(utf8)
+    unsafe fn from_unchecked(utf8: Vec<u8>) -> Self {
+        Self::from_utf8_unchecked(utf8)
     }
 }
 
 #[cfg(any(feature = "std", feature = "alloc"))]
 impl FromUnchecked<Box<[u8]>> for String {
     #[inline]
-    unsafe fn from_unchecked(utf8: Box<[u8]>) -> String {
+    unsafe fn from_unchecked(utf8: Box<[u8]>) -> Self {
         utf8.into_vec().into_unchecked()
     }
 }
@@ -155,8 +155,8 @@ impl FromUnchecked<Box<[u8]>> for String {
 #[cfg(any(feature = "std", feature = "alloc"))]
 impl<T: ?Sized> FromUnchecked<*mut T> for Box<T> {
     #[inline]
-    unsafe fn from_unchecked(ptr: *mut T) -> Box<T> {
-        Box::from_raw(ptr)
+    unsafe fn from_unchecked(ptr: *mut T) -> Self {
+        Self::from_raw(ptr)
     }
 }
 
