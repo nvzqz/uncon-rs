@@ -141,3 +141,11 @@ impl FromUnchecked<Box<[u8]>> for String {
         utf8.into_vec().into_unchecked()
     }
 }
+
+#[cfg(any(feature = "std", feature = "alloc"))]
+impl<T: ?Sized> FromUnchecked<*mut T> for Box<T> {
+    #[inline]
+    unsafe fn from_unchecked(ptr: *mut T) -> Box<T> {
+        Box::from_raw(ptr)
+    }
+}
