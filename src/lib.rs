@@ -77,6 +77,16 @@ use alloc::boxed::Box;
 #[cfg(feature = "alloc")]
 use alloc::{String, Vec};
 
+#[cfg(feature = "std")]
+use std::rc::Rc;
+#[cfg(all(not(feature = "std"), feature = "alloc"))]
+use alloc::rc::Rc;
+
+#[cfg(feature = "std")]
+use std::sync::Arc;
+#[cfg(all(not(feature = "std"), feature = "alloc"))]
+use alloc::arc::Arc;
+
 use core::str;
 
 /// Unchecked and potentially unsafe conversions from `T` into `Self`.
@@ -147,5 +157,21 @@ impl<T: ?Sized> FromUnchecked<*mut T> for Box<T> {
     #[inline]
     unsafe fn from_unchecked(ptr: *mut T) -> Box<T> {
         Box::from_raw(ptr)
+    }
+}
+
+#[cfg(any(feature = "std", feature = "alloc"))]
+impl<T> FromUnchecked<*const T> for Arc<T> {
+    #[inline]
+    unsafe fn from_unchecked(ptr: *const T) -> Self {
+        Self::from_raw(ptr)
+    }
+}
+
+#[cfg(any(feature = "std", feature = "alloc"))]
+impl<T> FromUnchecked<*const T> for Rc<T> {
+    #[inline]
+    unsafe fn from_unchecked(ptr: *const T) -> Self {
+        Self::from_raw(ptr)
     }
 }
