@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-**Note:** `uncon_derive` has its own changelog separate from this one.
+**Note:** `uncon_derive` has [its own changelog][derive-log] separate from this one.
 
 ## [Unreleased]
 
@@ -23,3 +23,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   | `Box<[u8]>`         | `String`      |
   | `*mut T`            | `Box<T>`      |
   | `*const T`          | `{Arc,Rc}<T>` |
+
+[derive-log]: https://github.com/nvzqz/uncon-rs/blob/master/derive/CHANGELOG.md
