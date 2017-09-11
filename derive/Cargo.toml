@@ -1,6 +1,6 @@
 [package]
 name = "uncon_derive"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Nikolai Vazquez"]
 license = "MIT/Apache-2.0"
 repository = "https://github.com/nvzqz/uncon-rs"
@@ -14,7 +14,7 @@ proc-macro = true
 travis-ci = { repository = "nvzqz/uncon-rs" }
 
 [dev-dependencies.uncon]
-version = "0.1.0"
+version = "1.0.0"
 path = "../"
 default-features = false
 
