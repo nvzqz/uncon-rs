@@ -68,8 +68,7 @@
 //!
 //! # Deriving Traits
 //!
-//! See the docs of [`uncon_derive`] for info on deriving this
-//! crate's traits.
+//! See the docs of [`uncon_derive`] for info on deriving this crate's traits.
 //!
 //! ```rust,ignore
 //! #[derive(FromUnchecked)]
