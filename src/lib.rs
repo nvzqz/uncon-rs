@@ -71,6 +71,13 @@
 //! See the docs of [`uncon_derive`] for info on deriving this
 //! crate's traits.
 //!
+//! ```rust,ignore
+//! #[derive(FromUnchecked)]
+//! struct Flags(u8);
+//!
+//! let f = unsafe { Flags::from_unchecked(0b1100) };
+//! ```
+//!
 //! [crate]: https://crates.io/crates/uncon
 //! [`FromUnchecked`]: trait.FromUnchecked.html
 //! [`IntoUnchecked`]: trait.IntoUnchecked.html
