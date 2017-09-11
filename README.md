@@ -1,6 +1,6 @@
 # uncon [![Build Status][travis-badge]][travis]
 
-Traits for unchecked conversions between types in Rust.
+Traits for **un**checked **con**versions between types in Rust.
 
 ## License
 
