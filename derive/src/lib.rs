@@ -42,6 +42,11 @@
 //!     A, B, C, D
 //! }
 //!
+//! // `usize` and `isize` also supported:
+//! #[derive(FromUnchecked)]
+//! #[repr(usize)]
+//! enum Value { X, Y, Z }
+//!
 //! # fn main() {
 //! unsafe {
 //!     let b = 0b1010;
@@ -100,7 +105,7 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
                 None
             }).next().expect("Could not find `#[repr]` attribute");
 
-            let int_ty = regex::Regex::new("^(i|u)\\d+$").unwrap();
+            let int_ty = regex::Regex::new("^(i|u)(\\d+|size)$").unwrap();
 
             let repr = items.iter().filter_map(|item| {
                 if let NestedMetaItem::MetaItem(ref item) = *item {
