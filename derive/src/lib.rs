@@ -57,7 +57,7 @@
 //!
 //! [crate]: https://crates.io/crates/uncon_derive
 //! [`uncon`]: https://docs.rs/uncon
-//! [`FromUnchecked`]: https://docs.rs/uncon/trait.FromUnchecked.html
+//! [`FromUnchecked`]: https://docs.rs/uncon/1.0.0/uncon/trait.FromUnchecked.html
 
 #[macro_use]
 extern crate quote;
