@@ -7,7 +7,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
-
 - `FromUnchecked` derive for:
     - Structs with a single field
     - C-like enums with `#[repr]` attribute
