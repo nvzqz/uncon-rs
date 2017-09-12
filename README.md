@@ -13,6 +13,29 @@ Separate changlogs are available for
 Although they may differ in version number, `uncon_derive` is always compatible
 with current major version of `uncon`.
 
+## Installation
+
+This crate is available [on crates.io][crate] and can be used by adding the
+following to your project's `Cargo.toml`:
+
+```toml
+[dependencies]
+uncon = "1.0.0"
+
+# Derive:
+uncon_derive = "1.0.0"
+```
+
+and this to your crate root:
+
+```rust
+extern crate uncon;
+
+// Derive:
+#[macro_use]
+extern crate uncon_derive
+```
+
 ## License
 
 This project is released under either:
