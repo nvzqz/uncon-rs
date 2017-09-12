@@ -23,7 +23,7 @@ following to your project's `Cargo.toml`:
 uncon = "1.0.0"
 
 # Derive:
-uncon_derive = "1.0.0"
+uncon_derive = "1.0.2"
 ```
 
 and this to your crate root:

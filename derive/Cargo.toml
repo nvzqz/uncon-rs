@@ -1,7 +1,7 @@
 [package]
 name = "uncon_derive"
 readme = "../README.md"
-version = "1.0.1"
+version = "1.0.2"
 authors = ["Nikolai Vazquez"]
 license = "MIT/Apache-2.0"
 repository = "https://github.com/nvzqz/uncon-rs"
