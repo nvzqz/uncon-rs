@@ -1,6 +1,8 @@
-# uncon [![Build Status][travis-badge]][travis]
+# uncon [![Crates.io][crate-badge] ![Downloads][crate-dl]][crate] [![Build Status][travis-badge]][travis]
 
 Traits for **un**checked **con**versions between types in Rust.
+
+[Documentation][crate-doc]
 
 ## Changes
 
@@ -20,6 +22,11 @@ This project is released under either:
 - [Apache License (Version 2.0)][license-apache]
 
 at your choosing.
+
+[crate]:       https://crates.io/crates/uncon
+[crate-dl]:    https://img.shields.io/crates/d/uncon.svg
+[crate-doc]:   https://docs.rs/uncon/
+[crate-badge]: https://img.shields.io/crates/v/uncon.svg
 
 [travis]:       https://travis-ci.org/nvzqz/uncon-rs
 [travis-badge]: https://travis-ci.org/nvzqz/uncon-rs.svg?branch=master
