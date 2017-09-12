@@ -22,7 +22,7 @@ default-features = false
 
 [features]
 default = ["std"]
-std = ["uncon/std"]
+std = []
 
 [dependencies]
 syn = "0.11"
