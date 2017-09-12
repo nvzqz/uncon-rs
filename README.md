@@ -2,6 +2,15 @@
 
 Traits for **un**checked **con**versions between types in Rust.
 
+## Changes
+
+Separate changlogs are available for
+[`uncon`](https://github.com/nvzqz/uncon-rs/blob/master/CHANGELOG.md) and
+[`uncon_derive`](https://github.com/nvzqz/uncon-rs/blob/master/derive/CHANGELOG.md).
+
+Although they may differ in version number, `uncon_derive` is always compatible
+with current major version of `uncon`.
+
 ## License
 
 This project is released under either:
