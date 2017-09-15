@@ -1,8 +1,8 @@
 //! Traits for **un**checked **con**versions between types.
 //!
 //! The purpose of this crate is to provide [`FromUnchecked`] and
-//! [`IntoUnchecked`], which that can be used across different crates to allow
-//! for fast conversions between types when speed necessary. These traits allow
+//! [`IntoUnchecked`], which can be used across different crates to allow for
+//! fast conversions between types when speed is necessary. These traits allow
 //! for code to be much more expressive than when using `mem::transmute`. They
 //! are the unchecked/unsafe equivalents of [`From`] and [`Into`], respectively.
 //!
