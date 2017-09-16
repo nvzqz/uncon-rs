@@ -81,18 +81,18 @@ pub fn from_unchecked(input: TokenStream) -> TokenStream {
     impl_from_unchecked(&ast).parse().unwrap()
 }
 
+fn attr_list<'a>(attrs: &'a [syn::Attribute], ident: &str) -> Option<&'a [NestedMetaItem]> {
+    attrs.iter().filter_map(|attr| {
+        if let MetaItem::List(ref id, ref items) = attr.value {
+            if id == ident { return Some(items.as_ref()); }
+        }
+        None
+    }).next()
+}
+
 fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
     let name = &ast.ident;
     let (impl_generics, ty_generics, where_clause) = ast.generics.split_for_impl();
-
-    let attr_list = |ident: &str| {
-        ast.attrs.iter().filter_map(|a| {
-            match a.value {
-                MetaItem::List(ref id, ref items) if id == ident => Some(items),
-                _ => None,
-            }
-        }).next()
-    };
 
     let core = if cfg!(feature = "std") { quote!(std) } else { quote!(core) };
 
@@ -105,7 +105,7 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
                 }
             }
 
-            let items = attr_list("repr").expect("Could not find `#[repr]` attribute");
+            let items = attr_list(&ast.attrs, "repr").expect("Could not find `#[repr]` attribute");
             let int_ty = regex::Regex::new("^(i|u)(\\d+|size)$").unwrap();
 
             let repr = items.iter().filter_map(|item| {
