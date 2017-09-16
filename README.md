@@ -55,8 +55,9 @@ fn main() {
 }
 ```
 
-To counter, one may also want to implement `From<T>` via `FromUnchecked<T>`
-where a mask or other operation is used to ensure the correct bits are used:
+To allow for safe (but possibly slower) conversions, one may also implement
+`From<T>` via `FromUnchecked<T>` where a mask or other operation is used to
+a valid input value is used:
 
 ```rust
 impl From<u8> for Value {
