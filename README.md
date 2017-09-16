@@ -26,15 +26,48 @@ uncon = "1.0.0"
 uncon_derive = "1.0.2"
 ```
 
-and this to your crate root:
+## Usage
+
+This project allows for converting values between types with the _unsafe_
+assumption that whatever required invariants are met.
+
+For example, a `Value` instance must have a bit pattern from 0 to 2, inclusive.
 
 ```rust
+#[macro_use]
+extern crate uncon_derive;
 extern crate uncon;
 
-// Derive:
-#[macro_use]
-extern crate uncon_derive
+use uncon::*;
+
+#[derive(FromUnchecked, PartialEq)]
+#[repr(u8)]
+enum Value {
+    X, Y, Z
+}
+
+fn main() {
+    let v = unsafe { Value::from_unchecked(2) };
+    assert_eq!(v, Value::Z);
+
+    // Undefined behavior:
+    let u = unsafe { Value::from_unchecked(3) };
+}
 ```
+
+To counter, one may also want to implement `From<T>` via `FromUnchecked<T>`
+where a mask or other operation is used to ensure the correct bits are used:
+
+```rust
+impl From<u8> for Value {
+    fn from(bits: u8) -> Value {
+        unsafe { Value::from_unchecked(bits % 3) }
+    }
+}
+```
+
+[Some types](https://docs.rs/uncon/1.0.0/uncon/trait.FromUnchecked.html#implementors)
+already implement `FromUnchecked` out-of-the-box.
 
 ## License
 
