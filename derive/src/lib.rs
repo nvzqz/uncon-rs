@@ -82,14 +82,18 @@ pub fn from_unchecked(input: TokenStream) -> TokenStream {
 }
 
 fn attr_items<'a>(attrs: &'a [syn::Attribute], ident: &str) -> Option<&'a [NestedMetaItem]> {
-    attrs.iter().filter_map(|attr| meta_items(&attr.value, ident)).next()
+    meta_items(attrs.iter().map(|a| &a.value), ident)
 }
 
-fn meta_items<'a>(item: &'a MetaItem, ident: &str) -> Option<&'a [NestedMetaItem]> {
-    if let MetaItem::List(ref id, ref items) = *item {
-        if id == ident { return Some(items); }
-    }
-    None
+fn meta_items<'a, T: 'a>(items: T, ident: &str) -> Option<&'a [NestedMetaItem]>
+    where T: IntoIterator<Item=&'a MetaItem>
+{
+    items.into_iter().filter_map(|item| {
+        if let MetaItem::List(ref id, ref items) = *item {
+            if id == ident { return Some(items.as_ref()); }
+        }
+        None
+    }).next()
 }
 
 fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
