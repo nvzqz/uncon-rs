@@ -85,6 +85,15 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
     let name = &ast.ident;
     let (impl_generics, ty_generics, where_clause) = ast.generics.split_for_impl();
 
+    let attr_list = |ident: &str| {
+        ast.attrs.iter().filter_map(|a| {
+            match a.value {
+                MetaItem::List(ref id, ref items) if id == ident => Some(items),
+                _ => None,
+            }
+        }).next()
+    };
+
     let core = if cfg!(feature = "std") { quote!(std) } else { quote!(core) };
 
     let (ty, init) = match ast.body {
@@ -96,15 +105,7 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
                 }
             }
 
-            let items = ast.attrs.iter().filter_map(|a| {
-                if let MetaItem::List(ref ident, ref items) = a.value {
-                    if ident == "repr" {
-                        return Some(items);
-                    }
-                }
-                None
-            }).next().expect("Could not find `#[repr]` attribute");
-
+            let items = attr_list("repr").expect("Could not find `#[repr]` attribute");
             let int_ty = regex::Regex::new("^(i|u)(\\d+|size)$").unwrap();
 
             let repr = items.iter().filter_map(|item| {
