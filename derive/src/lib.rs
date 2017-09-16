@@ -81,13 +81,15 @@ pub fn from_unchecked(input: TokenStream) -> TokenStream {
     impl_from_unchecked(&ast).parse().unwrap()
 }
 
-fn attr_list<'a>(attrs: &'a [syn::Attribute], ident: &str) -> Option<&'a [NestedMetaItem]> {
-    attrs.iter().filter_map(|attr| {
-        if let MetaItem::List(ref id, ref items) = attr.value {
-            if id == ident { return Some(items.as_ref()); }
-        }
-        None
-    }).next()
+fn attr_items<'a>(attrs: &'a [syn::Attribute], ident: &str) -> Option<&'a [NestedMetaItem]> {
+    attrs.iter().filter_map(|attr| meta_items(&attr.value, ident)).next()
+}
+
+fn meta_items<'a>(item: &'a MetaItem, ident: &str) -> Option<&'a [NestedMetaItem]> {
+    if let MetaItem::List(ref id, ref items) = *item {
+        if id == ident { return Some(items); }
+    }
+    None
 }
 
 fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
@@ -105,7 +107,7 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
                 }
             }
 
-            let items = attr_list(&ast.attrs, "repr").expect("Could not find `#[repr]` attribute");
+            let items = attr_items(&ast.attrs, "repr").expect("Could not find `#[repr]` attribute");
             let int_ty = regex::Regex::new("^(i|u)(\\d+|size)$").unwrap();
 
             let repr = items.iter().filter_map(|item| {
