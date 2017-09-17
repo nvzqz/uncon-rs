@@ -44,14 +44,6 @@
 //! enum Flag {
 //!     A, B, C, D
 //! }
-//! # assert_impl! {
-//! #   flag; Flag,
-//! #   FromUnchecked<u8>,
-//! #   FromUnchecked<u16>,
-//! #   FromUnchecked<u32>,
-//! #   FromUnchecked<u64>,
-//! #   FromUnchecked<usize>,
-//! # }
 //!
 //! // `usize` and `isize` also supported:
 //! #[derive(FromUnchecked)]
@@ -61,6 +53,14 @@
 //! }
 //!
 //! # fn main() {
+//! # assert_impl! {
+//! #   Flag,
+//! #   FromUnchecked<u8>,
+//! #   FromUnchecked<u16>,
+//! #   FromUnchecked<u32>,
+//! #   FromUnchecked<u64>,
+//! #   FromUnchecked<usize>,
+//! # }
 //! unsafe {
 //!     let b = 0b1010;
 //!     let x = U4::from_unchecked(b);
