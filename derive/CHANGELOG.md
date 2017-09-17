@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Derive `FromUnchecked` for other integer types if the derived type is also an
+  integer.
+  - Done via `#[uncon(other(u8, i8, ...))]`
+  - This is implemented via a simple `as` cast. In some cases, this may not make
+    sense, so it is recommended to manually implement the conversions for such
+    types.
 
 ## 1.0.2 - 2017-09-12
 ### Fixed

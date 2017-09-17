@@ -37,6 +37,7 @@
 //! struct U4 { bits: u8 }
 //!
 //! #[derive(FromUnchecked)]
+//! #[uncon(other(u16, u32, u64, usize))]
 //! #[repr(u8)]
 //! enum Flag {
 //!     A, B, C, D
@@ -56,6 +57,9 @@
 //!     let n = 2;
 //!     let f = Flag::from_unchecked(n);
 //!     assert_eq!(f as u8, n);
+//!
+//!     // Done via `#[uncon(other(u32, ...))]`
+//!     let f = Flag::from_unchecked(n as u32);
 //! }
 //! # }
 //! ```
@@ -75,10 +79,18 @@ use syn::{Body, MetaItem, NestedMetaItem, VariantData};
 use quote::Tokens;
 
 #[doc(hidden)]
-#[proc_macro_derive(FromUnchecked)]
+#[proc_macro_derive(FromUnchecked, attributes(uncon))]
 pub fn from_unchecked(input: TokenStream) -> TokenStream {
     let ast = syn::parse_derive_input(&input.to_string()).unwrap();
     impl_from_unchecked(&ast).parse().unwrap()
+}
+
+fn as_item(item: &NestedMetaItem) -> Option<&MetaItem> {
+    if let NestedMetaItem::MetaItem(ref item) = *item {
+        Some(item)
+    } else {
+        None
+    }
 }
 
 fn meta_items<'a, T: 'a>(items: T, ident: &str) -> Option<&'a [NestedMetaItem]>
@@ -147,6 +159,28 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
             (quote!(#ty), init)
         },
     };
+
+    let mut tys_impl = Vec::<Tokens>::new();
+
+    if let Some(items) = attr_items("uncon") {
+        if let Some(items) = meta_items(items.iter().filter_map(as_item), "other") {
+            let items = items.iter().filter_map(|item| {
+                if let NestedMetaItem::MetaItem(MetaItem::Word(ref ident)) = *item {
+                    Some(ident)
+                } else {
+                    None
+                }
+            });
+            tys_impl.extend(items.map(|item| quote! {
+                impl #impl_generics ::uncon::FromUnchecked<#item> for #name #ty_generics #where_clause {
+                    unsafe fn from_unchecked(inner: #item) -> Self {
+                        Self::from_unchecked(inner as #ty)
+                    }
+                }
+            }));
+        }
+    }
+
     quote! {
         impl #impl_generics ::uncon::FromUnchecked<#ty> for #name #ty_generics #where_clause {
             #[inline]
@@ -154,5 +188,7 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
                 #init
             }
         }
+
+        #(#tys_impl)*
     }
 }
