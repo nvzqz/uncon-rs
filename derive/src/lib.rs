@@ -81,10 +81,6 @@ pub fn from_unchecked(input: TokenStream) -> TokenStream {
     impl_from_unchecked(&ast).parse().unwrap()
 }
 
-fn attr_items<'a>(attrs: &'a [syn::Attribute], ident: &str) -> Option<&'a [NestedMetaItem]> {
-    meta_items(attrs.iter().map(|a| &a.value), ident)
-}
-
 fn meta_items<'a, T: 'a>(items: T, ident: &str) -> Option<&'a [NestedMetaItem]>
     where T: IntoIterator<Item=&'a MetaItem>
 {
@@ -100,6 +96,10 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
     let name = &ast.ident;
     let (impl_generics, ty_generics, where_clause) = ast.generics.split_for_impl();
 
+    let attr_items = |ident: &str| {
+        meta_items(ast.attrs.iter().map(|a| &a.value), ident)
+    };
+
     let core = if cfg!(feature = "std") { quote!(std) } else { quote!(core) };
 
     let (ty, init) = match ast.body {
@@ -111,7 +111,7 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
                 }
             }
 
-            let items = attr_items(&ast.attrs, "repr").expect("Could not find `#[repr]` attribute");
+            let items = attr_items("repr").expect("Could not find `#[repr]` attribute");
             let int_ty = regex::Regex::new("^(i|u)(\\d+|size)$").unwrap();
 
             let repr = items.iter().filter_map(|item| {
