@@ -34,7 +34,9 @@
 //! # extern crate uncon;
 //! # use uncon::*;
 //! #[derive(FromUnchecked)]
-//! struct U4 { bits: u8 }
+//! struct U4 {
+//!     bits: u8
+//! }
 //!
 //! #[derive(FromUnchecked)]
 //! #[uncon(other(u16, u32, u64, usize))]
@@ -46,7 +48,9 @@
 //! // `usize` and `isize` also supported:
 //! #[derive(FromUnchecked)]
 //! #[repr(usize)]
-//! enum Value { X, Y, Z }
+//! enum Value {
+//!     X, Y, Z
+//! }
 //!
 //! # fn main() {
 //! unsafe {
