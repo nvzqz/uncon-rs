@@ -54,7 +54,7 @@
 //!     let x = U4::from_unchecked(b);
 //!     assert_eq!(x.bits, b);
 //!
-//!     let n = 2;
+//!     let n = 2u8;
 //!     let f = Flag::from_unchecked(n);
 //!     assert_eq!(f as u8, n);
 //!
