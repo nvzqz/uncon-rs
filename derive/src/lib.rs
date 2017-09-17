@@ -160,27 +160,28 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
         },
     };
 
-    let mut tys_impl = Vec::<Tokens>::new();
+    let mut items = <&[NestedMetaItem]>::default();
 
-    if let Some(items) = attr_items("uncon") {
-        if let Some(items) = meta_items(items.iter().filter_map(as_item), "other") {
-            let items = items.iter().filter_map(|item| {
-                if let NestedMetaItem::MetaItem(MetaItem::Word(ref ident)) = *item {
-                    Some(ident)
-                } else {
-                    None
-                }
-            });
-            tys_impl.extend(items.map(|item| quote! {
+    if let Some(ai) = attr_items("uncon") {
+        if let Some(mi) = meta_items(ai.iter().filter_map(as_item), "other") {
+            items = mi;
+        }
+    }
+
+    let tys_impl = items.iter().filter_map(|item| {
+        if let NestedMetaItem::MetaItem(MetaItem::Word(ref item)) = *item {
+            Some(quote! {
                 impl #impl_generics ::uncon::FromUnchecked<#item> for #name #ty_generics #where_clause {
                     #[inline]
                     unsafe fn from_unchecked(inner: #item) -> Self {
                         Self::from_unchecked(inner as #ty)
                     }
                 }
-            }));
+            })
+        } else {
+            None
         }
-    }
+    });
 
     quote! {
         impl #impl_generics ::uncon::FromUnchecked<#ty> for #name #ty_generics #where_clause {
