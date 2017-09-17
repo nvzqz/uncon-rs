@@ -16,10 +16,9 @@ proc-macro = true
 [badges]
 travis-ci = { repository = "nvzqz/uncon-rs" }
 
-[dev-dependencies.uncon]
-version = "1.0.0"
-path = "../"
-default-features = false
+[dev-dependencies]
+uncon = { version = "1.0.0", path = "../", default-features = false }
+static_assertions = "0.2.3"
 
 [features]
 default = ["std"]

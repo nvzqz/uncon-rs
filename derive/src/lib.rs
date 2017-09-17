@@ -29,8 +29,8 @@
 //!
 //! ```
 //! # extern crate core;
-//! # #[macro_use]
-//! # extern crate uncon_derive;
+//! # #[macro_use] extern crate static_assertions;
+//! # #[macro_use] extern crate uncon_derive;
 //! # extern crate uncon;
 //! # use uncon::*;
 //! #[derive(FromUnchecked)]
@@ -44,6 +44,14 @@
 //! enum Flag {
 //!     A, B, C, D
 //! }
+//! # assert_impl! {
+//! #   flag; Flag,
+//! #   FromUnchecked<u8>,
+//! #   FromUnchecked<u16>,
+//! #   FromUnchecked<u32>,
+//! #   FromUnchecked<u64>,
+//! #   FromUnchecked<usize>,
+//! # }
 //!
 //! // `usize` and `isize` also supported:
 //! #[derive(FromUnchecked)]
