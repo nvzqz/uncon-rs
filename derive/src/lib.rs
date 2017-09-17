@@ -173,6 +173,7 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
             });
             tys_impl.extend(items.map(|item| quote! {
                 impl #impl_generics ::uncon::FromUnchecked<#item> for #name #ty_generics #where_clause {
+                    #[inline]
                     unsafe fn from_unchecked(inner: #item) -> Self {
                         Self::from_unchecked(inner as #ty)
                     }
