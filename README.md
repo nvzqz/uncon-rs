@@ -57,7 +57,7 @@ fn main() {
 
 To allow for safe (but possibly slower) conversions, one may also implement
 `From<T>` via `FromUnchecked<T>` where a mask or other operation is used to
-a valid input value is used:
+make the input value valid:
 
 ```rust
 impl From<u8> for Value {
