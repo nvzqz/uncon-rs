@@ -257,9 +257,25 @@ impl<T> FromUnchecked<*const T> for Arc<T> {
 }
 
 #[cfg(any(feature = "std", feature = "alloc"))]
+impl<T, U> FromUnchecked<Arc<U>> for Arc<T> {
+    #[inline]
+    unsafe fn from_unchecked(arc: Arc<U>) -> Self {
+        Arc::from_raw(Arc::into_raw(arc) as _)
+    }
+}
+
+#[cfg(any(feature = "std", feature = "alloc"))]
 impl<T> FromUnchecked<*const T> for Rc<T> {
     #[inline]
     unsafe fn from_unchecked(ptr: *const T) -> Self {
         Self::from_raw(ptr)
+    }
+}
+
+#[cfg(any(feature = "std", feature = "alloc"))]
+impl<T, U> FromUnchecked<Rc<U>> for Rc<T> {
+    #[inline]
+    unsafe fn from_unchecked(rc: Rc<U>) -> Self {
+        Rc::from_raw(Rc::into_raw(rc) as _)
     }
 }

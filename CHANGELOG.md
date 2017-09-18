@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   | `Vec<U>`            | `Vec<T>`      |
   | `Box<U>`            | `Box<T>`      |
   | `Box<[U]>`          | `Box<[T]>`    |
+  | `{Arc,Rc}<U>`       | `{Arc,Rc}<T>` |
 
 ## 1.0.0 - 2017-09-11
 ### Added
