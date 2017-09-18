@@ -174,7 +174,7 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
 
     for ai in attr_items("uncon") {
         for mi in meta_items(ai.iter().filter_map(as_item), "other") {
-            items.extend(mi);
+            other_items.extend(mi);
         }
     }
 
