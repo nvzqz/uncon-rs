@@ -70,6 +70,17 @@ impl From<u8> for Value {
 [Some types](https://docs.rs/uncon/1.0.0/uncon/trait.FromUnchecked.html#implementors)
 already implement `FromUnchecked` out-of-the-box.
 
+### Defined Behavior
+
+This project is not an excuse to go around and create chaos through
+[undefined behavior][ub]. These operations should only ever be done when speed
+is necessary and it is _**absolutely certain**_ that they will not cause strange
+behavior.
+
+Don't always reach for `mem::transmute`. There are usually
+[alternatives][transmute-alt]. [Here's][transmute-nom] a good list of reasons
+why it should be avoided.
+
 ## License
 
 This project is released under either:
@@ -87,6 +98,10 @@ at your choosing.
 
 [travis]:       https://travis-ci.org/nvzqz/uncon-rs
 [travis-badge]: https://travis-ci.org/nvzqz/uncon-rs.svg?branch=master
+
+[ub]:            https://en.wikipedia.org/wiki/Undefined_behavior
+[transmute-alt]: https://doc.rust-lang.org/std/mem/fn.transmute.html#alternatives
+[transmute-nom]: https://doc.rust-lang.org/nomicon/transmutes.html
 
 [license-mit]:    https://github.com/nvzqz/uncon-rs/blob/master/LICENSE-MIT
 [license-apache]: https://github.com/nvzqz/uncon-rs/blob/master/LICENSE-APACHE
