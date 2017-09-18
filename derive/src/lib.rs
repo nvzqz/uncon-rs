@@ -172,9 +172,9 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
 
     let mut other_items = Vec::<&NestedMetaItem>::new();
 
-    for ai in attr_items("uncon") {
-        for mi in meta_items(ai.iter().filter_map(as_item), "other") {
-            other_items.extend(mi);
+    for uncon_item in attr_items("uncon") {
+        for other_item in meta_items(uncon_item.iter().filter_map(as_item), "other") {
+            other_items.extend(other_item);
         }
     }
 
