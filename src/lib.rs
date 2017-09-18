@@ -79,8 +79,8 @@
 //!
 //! # Safety
 //!
-//! - `Vec<U>` to `Vec<T>`, `Box<U>` to `Box<T>` and `&U` to `&T` conversions
-//!   are similar to [`mem::transmute`] except without the
+//! - `Vec<U>` to `Vec<T>`, `Box<U>` to `Box<T>`, `&U` to `&T`, and other
+//!   conversions are similar to [`mem::transmute`] except without the
 //!   [undefined behavior][ub]. There are absolutely **_no_** safety measures.
 //!   - These conversions are extremely unsafe and should only be done in cases
 //!     such as turning `Vec<i8>` into `Vec<u8>` or something similarly trivial.
