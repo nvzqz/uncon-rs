@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   | :------------------ | :------------ |
   | `&{,mut} [U]`       | `&{,mut} [T]` |
   | `Vec<U>`            | `Vec<T>`      |
+  | `Box<U>`            | `Box<T>`      |
+  | `Box<[U]>`          | `Box<[T]>`    |
 
 ## 1.0.0 - 2017-09-11
 ### Added

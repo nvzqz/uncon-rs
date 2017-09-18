@@ -79,9 +79,9 @@
 //!
 //! # Safety
 //!
-//! - `Vec<U>` to `Vec<T>` and `&[U]` to `&[T]` conversions are similar to
-//!   [`mem::transmute`] except without the [undefined behavior][ub]. There are
-//!   absolutely **_no_** safety measures.
+//! - `Vec<U>` to `Vec<T>`, `Box<U>` to `Box<T>` and `&U` to `&T` conversions
+//!   are similar to [`mem::transmute`] except without the
+//!   [undefined behavior][ub]. There are absolutely **_no_** safety measures.
 //!   - These conversions are extremely unsafe and should only be done in cases
 //!     such as turning `Vec<i8>` into `Vec<u8>` or something similarly trivial.
 //!   - If `T` implements `Drop` in the case of `Vec<T>`, consider `map`ping
@@ -221,6 +221,22 @@ impl FromUnchecked<Box<[u8]>> for String {
     #[inline]
     unsafe fn from_unchecked(utf8: Box<[u8]>) -> Self {
         utf8.into_vec().into_unchecked()
+    }
+}
+
+#[cfg(any(feature = "std", feature = "alloc"))]
+impl<T, U> FromUnchecked<Box<U>> for Box<T> {
+    #[inline]
+    unsafe fn from_unchecked(b: Box<U>) -> Self {
+        Box::from_raw(Box::into_raw(b) as _)
+    }
+}
+
+#[cfg(any(feature = "std", feature = "alloc"))]
+impl<T, U> FromUnchecked<Box<[U]>> for Box<[T]> {
+    #[inline]
+    unsafe fn from_unchecked(b: Box<[U]>) -> Self {
+        Box::from_raw(Box::into_raw(b) as _)
     }
 }
 
