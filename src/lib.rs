@@ -19,7 +19,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! uncon = "1.0.0"
+//! uncon = "1.1.0"
 //! ```
 //!
 //! and this to your crate root:

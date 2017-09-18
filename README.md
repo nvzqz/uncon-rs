@@ -20,7 +20,7 @@ following to your project's `Cargo.toml`:
 
 ```toml
 [dependencies]
-uncon = "1.0.0"
+uncon = "1.1.0"
 
 # Derive:
 uncon_derive = "1.0.3"
@@ -67,7 +67,7 @@ impl From<u8> for Value {
 }
 ```
 
-[Some types](https://docs.rs/uncon/1.0.0/uncon/trait.FromUnchecked.html#implementors)
+[Some types](https://docs.rs/uncon/1.1.0/uncon/trait.FromUnchecked.html#implementors)
 already implement `FromUnchecked` out-of-the-box.
 
 ### Defined Behavior

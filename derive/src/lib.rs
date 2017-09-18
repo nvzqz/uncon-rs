@@ -8,7 +8,7 @@
 //! ```toml
 //! [dependencies]
 //! uncon_derive = "1.0.3"
-//! uncon = "1.0.0"
+//! uncon = "1.1.0"
 //! ```
 //!
 //! and this to your crate root:

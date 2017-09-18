@@ -17,7 +17,7 @@ proc-macro = true
 travis-ci = { repository = "nvzqz/uncon-rs" }
 
 [dev-dependencies]
-uncon = { version = "1.0.0", path = "../", default-features = false }
+uncon = { version = "1.1.0", path = "../", default-features = false }
 static_assertions = "0.2.3"
 
 [features]
