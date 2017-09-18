@@ -33,6 +33,9 @@
 //! # #[macro_use] extern crate uncon_derive;
 //! # extern crate uncon;
 //! # use uncon::*;
+//! # macro_rules! assert_impl_from {
+//! #     ($t:ty, $($u:ty),+) => { assert_impl!($t, $(FromUnchecked<$u>),+) }
+//! # }
 //! #[derive(FromUnchecked)]
 //! struct U4 {
 //!     bits: u8
@@ -53,14 +56,7 @@
 //! }
 //!
 //! # fn main() {
-//! # assert_impl! {
-//! #   Flag,
-//! #   FromUnchecked<u8>,
-//! #   FromUnchecked<u16>,
-//! #   FromUnchecked<u32>,
-//! #   FromUnchecked<u64>,
-//! #   FromUnchecked<usize>,
-//! # }
+//! # assert_impl_from!(Flag, u8, u16, u32, u64, usize);
 //! unsafe {
 //!     let b = 0b1010;
 //!     let x = U4::from_unchecked(b);
