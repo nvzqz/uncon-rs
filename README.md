@@ -23,7 +23,7 @@ following to your project's `Cargo.toml`:
 uncon = "1.1.0"
 
 # Derive:
-uncon_derive = "1.0.3"
+uncon_derive = "1.0.4"
 ```
 
 ## Usage

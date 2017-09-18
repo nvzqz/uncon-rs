@@ -7,7 +7,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! uncon_derive = "1.0.3"
+//! uncon_derive = "1.0.4"
 //! uncon = "1.1.0"
 //! ```
 //!
