@@ -79,8 +79,20 @@
 //! # }
 //! ```
 //!
+//! # Options
+//!
+//! - Derive [`FromUnchecked`] for other types:
+//!   - Done via `#[uncon(other(...))]`.
+//!   - Derives `FromUnchecked<T>` with each `T` listed via an `as` cast to the
+//!     inner or representative type.
+//!
+//! - Derive [`From`]:
+//!   - Done via `#[uncon(from_impl)]`.
+//!   - Only for C-like enums such that no variant is assigned a discriminant.
+//!
 //! [crate]: https://crates.io/crates/uncon_derive
 //! [`uncon`]: https://docs.rs/uncon
+//! [`From`]: https://doc.rust-lang.org/std/convert/trait.From.html
 //! [`FromUnchecked`]: https://docs.rs/uncon/1.0.0/uncon/trait.FromUnchecked.html
 
 #[macro_use]
