@@ -8,7 +8,7 @@ repository = "https://github.com/nvzqz/uncon-rs"
 categories = ["no-std"]
 keywords = ["unchecked", "unsafe", "convert"]
 description = "Traits for unchecked conversions between types."
-include = ["Cargo.toml", "src/**/*.rs", "README.md", "CHANGELOG.md", "LICENSE-APACHE", "LICENSE-MIT"]
+include = ["Cargo.toml", "src/**/*.rs", "README.md", "CHANGELOG.md", "LICENSE*"]
 
 [badges]
 travis-ci = { repository = "nvzqz/uncon-rs" }
