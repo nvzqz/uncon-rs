@@ -38,7 +38,7 @@
 //!     bits: u8
 //! }
 //!
-//! #[derive(FromUnchecked)]
+//! #[derive(FromUnchecked, PartialEq, Debug)]
 //! #[uncon(other(u16, u32, u64, usize))]
 //! #[repr(u8)]
 //! enum Flag {
@@ -68,7 +68,7 @@
 //!
 //!     let n = 2u8;
 //!     let f = Flag::from_unchecked(n);
-//!     assert_eq!(f as u8, n);
+//!     assert_eq!(f, Flag::C);
 //!
 //!     // Done via `#[uncon(other(u32, ...))]`
 //!     let f = Flag::from_unchecked(n as u32);
