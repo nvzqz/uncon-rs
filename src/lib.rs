@@ -117,7 +117,7 @@ use std::sync::Arc;
 #[cfg(all(not(feature = "std"), feature = "alloc"))]
 use alloc::arc::Arc;
 
-use core::{mem, slice, str};
+use core::{slice, str};
 
 /// Unchecked and potentially unsafe conversions from `T` into `Self`.
 pub trait FromUnchecked<T>: Sized {
@@ -198,12 +198,13 @@ impl<'a> FromUnchecked<&'a mut [u8]> for &'a mut str {
 impl<T, U> FromUnchecked<Vec<U>> for Vec<T> {
     #[inline]
     unsafe fn from_unchecked(mut vec: Vec<U>) -> Vec<T> {
+        use core::mem::forget;
         let new = Vec::from_raw_parts(
             vec.as_mut_ptr() as _,
             vec.len(),
             vec.capacity()
         );
-        mem::forget(vec);
+        forget(vec);
         new
     }
 }
