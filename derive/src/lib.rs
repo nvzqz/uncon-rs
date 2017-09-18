@@ -83,7 +83,7 @@
 //!
 //! - Derive [`FromUnchecked`] for other types:
 //!   - Done via `#[uncon(other(...))]`.
-//!   - Derives `FromUnchecked<T>` with each `T` listed via an `as` cast to the
+//!   - Derives `FromUnchecked` with each type listed via an `as` cast to the
 //!     inner or representative type.
 //!
 //! - Derive [`From`]:
