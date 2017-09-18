@@ -43,6 +43,7 @@
 //!
 //! #[derive(FromUnchecked, PartialEq, Debug)]
 //! #[uncon(other(u16, u32, u64, usize))]
+//! # #[uncon(other(i8, i16, i32, i64, isize))]
 //! #[repr(u8)]
 //! enum Flag {
 //!     A, B, C, D
@@ -57,6 +58,7 @@
 //!
 //! # fn main() {
 //! # assert_impl_from!(Flag, u8, u16, u32, u64, usize);
+//! # assert_impl_from!(Flag, i8, i16, i32, i64, isize);
 //! unsafe {
 //!     let b = 0b1010;
 //!     let x = U4::from_unchecked(b);
@@ -101,7 +103,7 @@ fn as_item(item: &NestedMetaItem) -> Option<&MetaItem> {
     }
 }
 
-fn meta_items<'a, T: 'a>(items: T, ident: &str) -> Option<&'a [NestedMetaItem]>
+fn meta_items<'a, T: 'a>(items: T, ident: &str) -> Vec<&'a [NestedMetaItem]>
     where T: IntoIterator<Item=&'a MetaItem>
 {
     items.into_iter().filter_map(|item| {
@@ -109,7 +111,7 @@ fn meta_items<'a, T: 'a>(items: T, ident: &str) -> Option<&'a [NestedMetaItem]>
             if id == ident { return Some(items.as_ref()); }
         }
         None
-    }).next()
+    }).collect()
 }
 
 fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
@@ -131,11 +133,11 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
                 }
             }
 
-            let items = attr_items("repr").expect("Could not find `#[repr]` attribute");
+            let items = *attr_items("repr").first().expect("Could not find `#[repr]` attribute");
             let int_ty = regex::Regex::new("^(i|u)(\\d+|size)$").unwrap();
 
-            let repr = items.iter().filter_map(|item| {
-                if let NestedMetaItem::MetaItem(ref item) = *item {
+            let repr = items.iter().filter_map(|ref item| {
+                if let NestedMetaItem::MetaItem(ref item) = **item {
                     let name = item.name();
                     if int_ty.is_match(name) {
                         return Some(name);
@@ -168,16 +170,16 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
         },
     };
 
-    let mut items = <&[NestedMetaItem]>::default();
+    let mut other_items = Vec::<&NestedMetaItem>::new();
 
-    if let Some(ai) = attr_items("uncon") {
-        if let Some(mi) = meta_items(ai.iter().filter_map(as_item), "other") {
-            items = mi;
+    for ai in attr_items("uncon") {
+        for mi in meta_items(ai.iter().filter_map(as_item), "other") {
+            items.extend(mi);
         }
     }
 
-    let tys_impl = items.iter().filter_map(|item| {
-        if let NestedMetaItem::MetaItem(MetaItem::Word(ref item)) = *item {
+    let tys_impl = other_items.iter().filter_map(|item| {
+        if let NestedMetaItem::MetaItem(MetaItem::Word(ref item)) = **item {
             Some(quote! {
                 impl #impl_generics ::uncon::FromUnchecked<#item> for #name #ty_generics #where_clause {
                     #[inline]
