@@ -71,11 +71,10 @@
 //!     assert_eq!(f, Flag::C);
 //!
 //!     // Done via `#[uncon(other(u32, ...))]`
-//!     let f = Flag::from_unchecked(n as u32);
+//!     assert_eq!(Flag::from_unchecked(n as u32), f);
 //!
 //!     // Done via `#[uncon(impl_from)]`
-//!     let f = Flag::from(5usize);
-//!     assert_eq!(f, Flag::B);
+//!     assert_eq!(Flag::from(5usize), Flag::B);
 //! }
 //! # }
 //! ```
