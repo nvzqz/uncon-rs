@@ -34,7 +34,9 @@
 //! # extern crate uncon;
 //! # use uncon::*;
 //! # macro_rules! assert_impl_from {
-//! #     ($t:ty, $($u:ty),+) => { assert_impl!($t, $(FromUnchecked<$u>),+) }
+//! #    ($t:ty, $($u:ty),+) => {
+//! #        assert_impl!($t, $(FromUnchecked<$u>, From<$u>),+)
+//! #    }
 //! # }
 //! #[derive(FromUnchecked)]
 //! struct U4 {
@@ -42,7 +44,7 @@
 //! }
 //!
 //! #[derive(FromUnchecked, PartialEq, Debug)]
-//! #[uncon(other(u16, u32, u64, usize))]
+//! #[uncon(impl_from, other(u16, u32, u64, usize))]
 //! # #[uncon(other(i8, i16, i32, i64, isize))]
 //! #[repr(u8)]
 //! enum Flag {
@@ -70,6 +72,10 @@
 //!
 //!     // Done via `#[uncon(other(u32, ...))]`
 //!     let f = Flag::from_unchecked(n as u32);
+//!
+//!     // Done via `#[uncon(impl_from)]`
+//!     let f = Flag::from(5usize);
+//!     assert_eq!(f, Flag::B);
 //! }
 //! # }
 //! ```
@@ -121,12 +127,23 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
     let attr_items = |ident: &str| {
         meta_items(ast.attrs.iter().map(|a| &a.value), ident)
     };
+    let uncon_items = attr_items("uncon");
 
     let core = if cfg!(feature = "std") { quote!(std) } else { quote!(core) };
 
-    let (ty, init) = match ast.body {
+    let impl_from = uncon_items.iter().flat_map(|i| i.iter()).filter_map(|item| {
+        if let NestedMetaItem::MetaItem(MetaItem::Word(ref ident)) = *item {
+            if ident == "impl_from" { return Some(true); }
+        }
+        None
+    }).next().unwrap_or(false);
+
+    let (ty, init, from_impl) = match ast.body {
         Body::Enum(ref variants) => {
             for variant in variants {
+                assert!(!impl_from || variant.discriminant.is_none(),
+                        "Cannot derive From due to {}::{} discriminant",
+                        name, variant.ident);
                 match variant.data {
                     VariantData::Unit => continue,
                     _ => panic!("Found non-unit variant '{}'", variant.ident),
@@ -150,9 +167,21 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
             let mut ty = Tokens::new();
             ty.append(repr);
 
-            (ty, init)
+            let from_impl = if impl_from {
+                let num = variants.len();
+                Some(quote! {
+                    use uncon::IntoUnchecked;
+                    unsafe { (inner % (#num as #ty)).into_unchecked() }
+                })
+            } else {
+                None
+            };
+
+            (ty, init, from_impl)
         },
         Body::Struct(ref data) => {
+            assert!(!impl_from, "Cannot derive From for non-enum types");
+
             let fields = data.fields();
             if fields.len() != 1 {
                 panic!("`FromUnchecked` can only be derived for types with a single field");
@@ -166,13 +195,13 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
             };
 
             let ty = &field.ty;
-            (quote!(#ty), init)
+            (quote!(#ty), init, None)
         },
     };
 
     let mut other_items = Vec::<&NestedMetaItem>::new();
 
-    for uncon_item in attr_items("uncon") {
+    for uncon_item in uncon_items.iter() {
         for other_item in meta_items(uncon_item.iter().filter_map(as_item), "other") {
             other_items.extend(other_item);
         }
@@ -180,6 +209,12 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
 
     let tys_impl = other_items.iter().filter_map(|item| {
         if let NestedMetaItem::MetaItem(MetaItem::Word(ref item)) = **item {
+            let from_impl = from_impl.as_ref().map(|_| quote! {
+                impl #impl_generics From<#item> for #name #ty_generics #where_clause {
+                    #[inline]
+                    fn from(inner: #item) -> Self { (inner as #ty).into() }
+                }
+            });
             Some(quote! {
                 impl #impl_generics ::uncon::FromUnchecked<#item> for #name #ty_generics #where_clause {
                     #[inline]
@@ -187,9 +222,17 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
                         Self::from_unchecked(inner as #ty)
                     }
                 }
+                #from_impl
             })
         } else {
             None
+        }
+    });
+
+    let from_impl = from_impl.as_ref().map(|fi| quote! {
+        impl #impl_generics From<#ty> for #name #ty_generics #where_clause {
+            #[inline]
+            fn from(inner: #ty) -> Self { #fi }
         }
     });
 
@@ -200,7 +243,7 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
                 #init
             }
         }
-
+        #from_impl
         #(#tys_impl)*
     }
 }

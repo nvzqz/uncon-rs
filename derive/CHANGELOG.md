@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Derive `From<T>` via `FromUnchecked<T>` for C-like enums
+  - Done via `#[uncon(impl_from)]`
 
 ## 1.0.4 - 2017-09-18
 ### Fixed
