@@ -77,7 +77,19 @@
 //! let f = unsafe { Flags::from_unchecked(0b1100) };
 //! ```
 //!
+//! # Safety
+//!
+//! - `Vec<U>` to `Vec<T>` and `&[U]` to `&[T]` conversions are similar to
+//!   [`mem::transmute`] except without the [undefined behavior][ub]. There are
+//!   absolutely **_no_** safety measures.
+//!   - These conversions are extremely unsafe and should only be done in cases
+//!     such as turning `Vec<i8>` into `Vec<u8>` or something similarly trivial.
+//!   - If `T` implements `Drop` in the case of `Vec<T>`, consider `map`ping
+//!     `from_unchecked` and `collect`ing the results.
+//!
 //! [crate]: https://crates.io/crates/uncon
+//! [ub]: https://en.wikipedia.org/wiki/Undefined_behavior
+//! [`mem::transmute`]: https://doc.rust-lang.org/std/mem/fn.transmute.html
 //! [`FromUnchecked`]: trait.FromUnchecked.html
 //! [`IntoUnchecked`]: trait.IntoUnchecked.html
 //! [`uncon_derive`]: https://docs.rs/uncon_derive
@@ -105,7 +117,7 @@ use std::sync::Arc;
 #[cfg(all(not(feature = "std"), feature = "alloc"))]
 use alloc::arc::Arc;
 
-use core::str;
+use core::{mem, slice, str};
 
 /// Unchecked and potentially unsafe conversions from `T` into `Self`.
 pub trait FromUnchecked<T>: Sized {
@@ -154,6 +166,20 @@ impl<'a, T: ?Sized> FromUnchecked<*mut T> for &'a mut T {
     }
 }
 
+impl<'a, T, U> FromUnchecked<&'a [U]> for &'a [T] {
+    #[inline]
+    unsafe fn from_unchecked(slice: &[U]) -> &[T] {
+        slice::from_raw_parts(slice.as_ptr() as _, slice.len())
+    }
+}
+
+impl<'a, T, U> FromUnchecked<&'a mut [U]> for &'a mut [T] {
+    #[inline]
+    unsafe fn from_unchecked(slice: &mut [U]) -> &mut [T] {
+        slice::from_raw_parts_mut(slice.as_mut_ptr() as _, slice.len())
+    }
+}
+
 impl<'a> FromUnchecked<&'a [u8]> for &'a str {
     #[inline]
     unsafe fn from_unchecked(utf8: &[u8]) -> &str {
@@ -165,6 +191,20 @@ impl<'a> FromUnchecked<&'a mut [u8]> for &'a mut str {
     #[inline]
     unsafe fn from_unchecked(utf8: &mut [u8]) -> &mut str {
         str::from_utf8_unchecked_mut(utf8)
+    }
+}
+
+#[cfg(any(feature = "std", feature = "alloc"))]
+impl<T, U> FromUnchecked<Vec<U>> for Vec<T> {
+    #[inline]
+    unsafe fn from_unchecked(mut vec: Vec<U>) -> Vec<T> {
+        let new = Vec::from_raw_parts(
+            vec.as_mut_ptr() as _,
+            vec.len(),
+            vec.capacity()
+        );
+        mem::forget(vec);
+        new
     }
 }
 

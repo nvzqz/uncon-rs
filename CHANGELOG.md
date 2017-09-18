@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 **Note:** `uncon_derive` has [its own changelog][derive-log] separate from this one.
 
 ## [Unreleased]
+### Added
+- Generic `FromUnchecked` implementations:
+
+  | From                | Into          |
+  | :------------------ | :------------ |
+  | `&{,mut} [U]`       | `&{,mut} [T]` |
+  | `Vec<U>`            | `Vec<T>`      |
 
 ## 1.0.0 - 2017-09-11
 ### Added
