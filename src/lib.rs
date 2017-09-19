@@ -138,6 +138,13 @@ impl<T, U: FromUnchecked<T>> IntoUnchecked<U> for T {
     }
 }
 
+impl<T, U: IntoUnchecked<T>> FromUnchecked<U> for Option<T> {
+    #[inline]
+    unsafe fn from_unchecked(other: U) -> Option<T> {
+        Some(other.into_unchecked())
+    }
+}
+
 impl<'a, T, U> FromUnchecked<&'a U> for &'a T {
     #[inline]
     unsafe fn from_unchecked(other: &U) -> &T {
