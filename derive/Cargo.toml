@@ -27,4 +27,3 @@ std = []
 [dependencies]
 syn = "0.11"
 quote = "0.3"
-regex = "0.2"

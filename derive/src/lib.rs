@@ -98,7 +98,6 @@
 #[macro_use]
 extern crate quote;
 extern crate proc_macro;
-extern crate regex;
 extern crate syn;
 
 use proc_macro::TokenStream;
@@ -129,6 +128,27 @@ fn meta_items<'a, T: 'a>(items: T, ident: &str) -> Vec<&'a [NestedMetaItem]>
         }
         None
     }).collect()
+}
+
+fn is_int_ty(s: &str) -> bool {
+    let mut bytes = s.as_bytes();
+    match bytes.get(0) {
+        Some(&b'u') | Some(&b'i') => (),
+        _ => return false,
+    }
+    bytes = &bytes[1..];
+    match bytes.len() {
+        0 => false,
+        4 if bytes == b"size" => true,
+        _ => {
+            for &byte in bytes {
+                if byte < b'0' || byte > b'9' {
+                    return false;
+                }
+            }
+            true
+        },
+    }
 }
 
 fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
@@ -162,12 +182,11 @@ fn impl_from_unchecked(ast: &syn::DeriveInput) -> quote::Tokens {
             }
 
             let items = *attr_items("repr").first().expect("Could not find `#[repr]` attribute");
-            let int_ty = regex::Regex::new("^(i|u)(\\d+|size)$").unwrap();
 
             let repr = items.iter().filter_map(|ref item| {
                 if let NestedMetaItem::MetaItem(ref item) = **item {
                     let name = item.name();
-                    if int_ty.is_match(name) {
+                    if is_int_ty(name) {
                         return Some(name);
                     }
                 }
