@@ -4,6 +4,13 @@ Traits for **un**checked **con**versions between types in Rust.
 
 [Documentation][crate-doc]
 
+<a href="https://www.patreon.com/nvzqz">
+    <img src="https://c5.patreon.com/external/logo/become_a_patron_button.png" alt="Become a Patron!" height="35">
+</a>
+<a href="https://www.paypal.me/nvzqz">
+    <img src="https://buymecoffee.intm.org/img/button-paypal-white.png" alt="Buy me a coffee" height="35">
+</a>
+
 ## Changes
 
 Separate changelogs are available for
