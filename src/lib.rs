@@ -145,6 +145,20 @@ pub trait IntoUnchecked<T>: Sized {
     unsafe fn into_unchecked(self) -> T;
 }
 
+impl<T, U> FromUnchecked<*const T> for *const U {
+    #[inline]
+    unsafe fn from_unchecked(other: *const T) -> *const U {
+        other as *const U
+    }
+}
+
+impl<T, U> FromUnchecked<*mut T> for *mut U {
+    #[inline]
+    unsafe fn from_unchecked(other: *mut T) -> *mut U {
+        other as *mut U
+    }
+}
+
 impl<T, U: FromUnchecked<T>> IntoUnchecked<U> for T {
     #[inline]
     unsafe fn into_unchecked(self) -> U {
